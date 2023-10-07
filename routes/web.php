@@ -37,7 +37,7 @@ Route::middleware([
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     /*********** ticket *****************************/
     Route::get('/tickets', TicketResource::class)->name('tickets');
-    Route::get('/ticket-view/{id}', TicketView::class)->name('tickets.show');
+    Route::get('/ticket-view/{ticketId}', TicketView::class)->name('tickets.show');
 
     /*********** department *****************************/
     Route::get('/departments', DepartmentResource::class)->name('departments');

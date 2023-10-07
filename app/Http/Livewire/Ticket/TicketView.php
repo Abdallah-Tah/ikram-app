@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire\Ticket;
 
+use App\Models\Ticket;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\TicketComment;
 use Illuminate\Support\Facades\Auth;
 
 class TicketView extends Component
 {
     use WithPagination;
 
-    public $ticketId;
+    public $ticketId, $commentId;
     public $name, $comment;
     public $search;
     public $sortBy = 'id';
@@ -18,10 +20,9 @@ class TicketView extends Component
     public $sortAsc = true;
     public $perPage = 10;
     public $page = 1;
-    protected $tickets;
-
-    public $showModal = false;
-    public $showDeleteModal = false;
+    public $ticket;
+    public $showEditTicketCommentModal = false;
+    public $showDeleteTicketCommentModal = false;
 
 
     public function sortBy($field)
@@ -35,41 +36,31 @@ class TicketView extends Component
         return $this->sortBy = $field;
     }
 
-    public function mount($id)
+    public function mount($ticketId)
     {
-        $this->ticketId = $id;
+        $this->ticketId = $ticketId;
+        $this->ticket = Ticket::find($ticketId);
     }
 
-    public function showModal()
+    public function showDeleteTicketCommentModal($id)
     {
-        $this->reset();
-        $this->showModal = true;
-    }
-
-    public function showDeleteModal($id)
-    {
-        $this->ticketId = $id;
-        $this->showDeleteModal = true;
+        $this->resetFields();
+        $this->commentId = $id;
+        $this->comment = TicketComment::find($id)->comment;
+        $this->showDeleteTicketCommentModal = true;
     }
 
     public function render()
     {
-        $ticket = Auth::user()->tickets()->find($this->ticketId);
-        $ticketComments = $ticket->ticketComments()->orderBy('created_at', 'desc')->get();
+        //$ticket = Auth::user()->tickets()->find($this->ticketId);
+        $ticketComments = TicketComment::where('ticket_id', $this->ticketId)->orderBy($this->sortBy, $this->sortDirection)->paginate($this->perPage);
 
         return view('livewire.ticket.ticket-view', [
-            'ticket' => $ticket,
+            // 'ticket' => $ticket,
             'ticketComments' => $ticketComments
         ]);
     }
 
-    public function delete()
-    {
-        $ticket = Auth::user()->tickets()->find($this->ticketId);
-        $ticket->delete();
-        $this->showDeleteModal = false;
-        $this->emit('ticketDeleted');
-    }
 
     public function updatingSearch()
     {
@@ -107,7 +98,7 @@ class TicketView extends Component
             'comment' => 'required',
         ]);
 
-        $ticket = Auth::user()->tickets()->find($this->ticketId);
+        $ticket = Ticket::find($this->ticketId);
         $ticket->ticketComments()->create([
             'comment' => $this->comment,
             'user_id' => Auth::user()->id
@@ -116,11 +107,21 @@ class TicketView extends Component
         $this->dispatchBrowserEvent('notify', 'Comment added successfully!');
     }
 
-    public function deleteTicketComment($id)
+    public function hideShowEditTicketCommentModal()
     {
-        $ticket = Auth::user()->tickets()->find($this->ticketId);
-        $ticketComment = $ticket->ticketComments()->find($id);
+        $this->resetFields();
+
+        $this->showEditTicketCommentModal = false;
+    }
+
+
+    public function deleteTicketComment()
+    {
+        $ticketComment = TicketComment::find($this->commentId);
         $ticketComment->delete();
+
+        $this->resetFields();
+        $this->showDeleteTicketCommentModal = false;
         $this->dispatchBrowserEvent('notify', 'Comment deleted successfully!');
     }
 
@@ -136,4 +137,31 @@ class TicketView extends Component
             'comment' => 'required',
         ]);
     }
+
+    public function showEditTicketCommentModal($id)
+    {
+        $ticketComment = TicketComment::find($id);
+        $this->commentId = $ticketComment->id; // Fixed this line
+        $this->comment = $ticketComment->comment;
+        $this->showEditTicketCommentModal = true;
+    }
+
+
+    public function updateTicketComment()
+    {
+        $this->validate([
+            'comment' => 'required',
+        ]);
+
+        $ticketComment = TicketComment::find($this->commentId); // Use commentId here
+        $ticketComment->update([
+            'comment' => $this->comment,
+            'user_id' => Auth::user()->id
+        ]);
+        $this->resetFields();
+        $this->showEditTicketCommentModal = false;
+        $this->dispatchBrowserEvent('notify', 'Comment updated successfully!');
+    }
+
+
 }

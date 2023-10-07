@@ -84,4 +84,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(TicketComment::class);
     }
+
+    public function scopeIsAdmin($query)
+    {
+        return $query->where('is_admin', 1);
+    }
+
+    public function scopeIsUser($query)
+    {
+        return $query->where('is_admin', 0);
+    }
 }

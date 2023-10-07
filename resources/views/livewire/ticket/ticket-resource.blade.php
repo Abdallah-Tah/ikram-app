@@ -85,7 +85,7 @@
                                     <td class="py-3 px-6 text-left whitespace-nowrap">
                                         <div class="flex items-center">
                                             <span class="font-medium">
-                                                
+
                                                 <a href="{{ route('tickets.show', $ticket->id) }}"
                                                     class="text-green-600 hover:text-blue-600 underline">
                                                     {{ $ticket->claim_number }}
@@ -117,13 +117,15 @@
                                     </td>
                                     <td class="py-3 px-6 text-left whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <x-jet-button wire:click="editTicket({{ $ticket->id }})">
-                                                {{ __('Edit') }}
-                                            </x-jet-button>
-                                            {{-- <x-jet-danger-button class="ml-2"
-                                                wire:click="delete({{ $ticket->id }})">
-                                                {{ __('Delete') }}
-                                            </x-jet-danger-button> --}}
+                                            @if (Auth::id() === $ticket->user_id)
+                                                <x-jet-button wire:click="editTicket({{ $ticket->id }})">
+                                                    {{ __('Edit') }}
+                                                </x-jet-button>
+                                            @else
+                                                <x-jet-button wire:click="editTicket({{ $ticket->id }})" disabled class="opacity-50 cursor-not-allowed">
+                                                    {{ __('Edit') }}
+                                                </x-jet-button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
