@@ -6,11 +6,12 @@ use App\Models\Ticket;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\TicketComment;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 
 class TicketView extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $ticketId, $commentId;
     public $name, $comment;
