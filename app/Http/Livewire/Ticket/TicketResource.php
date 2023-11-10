@@ -153,7 +153,7 @@ class TicketResource extends Component
 
         if ($this->ticketId) {
             $ticket = Ticket::find($this->ticketId);
-            $this->authorize('update', $ticket);
+           // $this->authorize('update', $ticket);
             $ticket->update([
                 'title' => $this->title,
                 //'requestor_name' => $this->requestor_name,
@@ -176,7 +176,7 @@ class TicketResource extends Component
     public function delete()
     {
         $ticket = Ticket::find($this->ticketId);
-        $this->authorize('delete', $ticket);
+        // $this->authorize('delete', $ticket);
         $ticket->delete();
         $this->showDeleteModal = false;
         $this->dispatchBrowserEvent('notify', 'Ticket Deleted Successfully!');
