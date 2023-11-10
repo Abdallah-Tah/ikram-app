@@ -66,7 +66,7 @@
                     Tickets
                 </x-jet-responsive-nav-link>
 
-                @if (auth()->user()->isAdmin)
+                {{-- @if (auth()->user()->isAdmin) --}}
                     <x-jet-responsive-nav-link href="{{ route('departments') }}" role="menuitem" :active="request()->routeIs('departments')"
                         class="flex items-center p-2 text-sm text-gray-100 hover:bg-gray-100 hover:text-gray-700 rounded-lg">
                         Departments
@@ -79,7 +79,7 @@
                         class="flex items-center p-2 text-sm text-gray-100 hover:bg-gray-100 hover:text-gray-700 rounded-lg">
                         Plans
                     </x-jet-responsive-nav-link>
-                @endif
+                {{-- @endif --}}
             </div>
         </div>
 

@@ -175,7 +175,7 @@
             </x-slot>
 
             <x-slot name="content">
-                Are you sure you want to delete this comment "<strong>{{ $comment->comment }}</strong>"?
+                Are you sure you want to delete this comment "<strong>{{ is_object($comment) ? $comment->comment : '' }}</strong>"?
             </x-slot>
 
             <x-slot name="footer">
