@@ -68,15 +68,15 @@
 
                 {{-- @if (auth()->user()->isAdmin) --}}
                     <x-jet-responsive-nav-link href="{{ route('departments') }}" role="menuitem" :active="request()->routeIs('departments')"
-                        class="flex items-center p-2 text-sm text-gray-100 hover:bg-gray-100 hover:text-gray-700 rounded-lg">
+                         class="flex items-center p-2 text-sm text-white hover:bg-gray-100 hover:text-gray-700 rounded-lg bg-green-600">
                         Departments
                     </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('categories') }}" role="menuitem" :active="request()->routeIs('categories')"
-                        class="flex items-center p-2 text-sm text-gray-100 hover:bg-gray-100 hover:text-gray-700 rounded-lg">
+                         class="flex items-center p-2 text-sm text-white hover:bg-gray-100 hover:text-gray-700 rounded-lg bg-green-600">
                         Categories
                     </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('plans') }}" role="menuitem" :active="request()->routeIs('plans')"
-                        class="flex items-center p-2 text-sm text-gray-100 hover:bg-gray-100 hover:text-gray-700 rounded-lg">
+                         class="flex items-center p-2 text-sm text-white hover:bg-gray-100 hover:text-gray-700 rounded-lg bg-green-600">
                         Plans
                     </x-jet-responsive-nav-link>
                 {{-- @endif --}}
