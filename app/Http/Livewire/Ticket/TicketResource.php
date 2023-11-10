@@ -89,7 +89,7 @@ class TicketResource extends Component
             'title' => 'required',
             //'requestor_name' => 'required',
             'department_id' => 'required',
-            'is_notified' => 'required',
+            // 'is_notified' => 'required',
             'plan_id' => 'required',
             'category_id' => 'required',
             'claim_number' => 'required',
